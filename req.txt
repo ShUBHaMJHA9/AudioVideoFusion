@@ -1,0 +1,9 @@
+ffmpeg-python
+flask_sqlalchemy
+fastapi
+uvicorn
+pydantic
+Jinja2
+python-multipart
+Werkzeug
+flask

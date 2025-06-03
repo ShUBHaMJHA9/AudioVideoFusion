@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Multimedia Processor{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Gradient Background -->
+    <div class="gradient-bg"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand brand-text" href="/">
+                <i class="fas fa-play-circle brand-icon me-2"></i>
+                <span class="brand-primary">Multi</span><span class="brand-secondary">Media</span>
+                <span class="brand-accent">Pro</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="fas fa-tools me-1"></i>Tools
+                        </a>
+                        <ul class="dropdown-menu glass-dropdown">
+                            <li><a class="dropdown-item" href="#" onclick="app.selectOperation('merge_audio_video')">
+                                <i class="fas fa-film me-2"></i>Audio + Video
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="app.selectOperation('merge_audio_tracks')">
+                                <i class="fas fa-music me-2"></i>Merge Audio
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="app.selectOperation('audio_to_image')">
+                                <i class="fas fa-image me-2"></i>Audio + Image
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="app.selectOperation('convert_format')">
+                                <i class="fas fa-exchange-alt me-2"></i>Convert Format
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="app.selectOperation('loop_audio')">
+                                <i class="fas fa-repeat me-2"></i>Loop Audio
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="app.selectOperation('merge_videos')">
+                                <i class="fas fa-video me-2"></i>Merge Videos
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="app.selectOperation('extract_audio')">
+                                <i class="fas fa-volume-up me-2"></i>Extract Audio
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#urlModal">
+                            <i class="fas fa-link me-1"></i>URL Import
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="navbar-nav ms-auto d-flex align-items-center">
+                    <!-- Theme Switcher -->
+                    <div class="nav-item me-3">
+                        <div class="theme-switcher">
+                            <input type="checkbox" id="theme-toggle" class="theme-toggle-input">
+                            <label for="theme-toggle" class="theme-toggle-label">
+                                <i class="fas fa-sun"></i>
+                                <i class="fas fa-moon"></i>
+                                <span class="theme-toggle-ball"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Creator Info -->
+                    <div class="nav-item dropdown me-3">
+                        <a class="nav-link dropdown-toggle creator-link" href="#" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>Creator
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
+                            <li class="dropdown-header">
+                                <i class="fas fa-code me-2"></i>Made by @codetech
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="https://github.com/codetech" target="_blank">
+                                <i class="fab fa-github me-2"></i>GitHub Profile
+                            </a></li>
+                            <li><a class="dropdown-item" href="https://t.me/codetech_channel" target="_blank">
+                                <i class="fab fa-telegram me-2"></i>Join Telegram
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">
+                                <i class="fas fa-info-circle me-2"></i>About Project
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#supportModal">
+                                <i class="fas fa-heart me-2"></i>Support Dev
+                            </a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Status -->
+                    <div class="nav-item">
+                        <span class="nav-status">
+                            <i class="fas fa-circle status-dot"></i>
+                            Ready
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+        <div id="toast-template" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" style="display: none;">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <!-- Message will be inserted here -->
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-body text-center">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                    </div>
+                    <h5 class="text-white mt-3" id="loading-text">Processing...</h5>
+                    <div class="progress mt-3" style="height: 8px;">
+                        <div class="progress-bar progress-bar-animated" id="modal-progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- URL Import Modal -->
+    <div class="modal fade" id="urlModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-link text-primary me-2"></i>
+                        Import from URL
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Media URL</label>
+                        <input type="url" class="form-control" id="media-url" placeholder="https://example.com/media.mp4">
+                        <div class="form-text">Enter a direct URL to audio, video, or image file</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">File Type</label>
+                        <select class="form-select" id="url-file-type">
+                            <option value="auto">Auto Detect</option>
+                            <option value="audio">Audio</option>
+                            <option value="video">Video</option>
+                            <option value="image">Image</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-gradient" onclick="app.importFromUrl()">
+                        <i class="fas fa-download me-2"></i>Import File
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal fade" id="aboutModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-info-circle text-info me-2"></i>
+                        About MultiMediaPro
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-play-circle fa-4x text-primary mb-3"></i>
+                        <h4>MultiMediaPro v2.0</h4>
+                        <p class="text-muted">Professional Multimedia Processing Platform</p>
+                    </div>
+                    <div class="feature-list">
+                        <div class="feature-item mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Advanced FFmpeg Processing</strong>
+                        </div>
+                        <div class="feature-item mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Real-time Progress Tracking</strong>
+                        </div>
+                        <div class="feature-item mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Database Integration</strong>
+                        </div>
+                        <div class="feature-item mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>URL-based Media Import</strong>
+                        </div>
+                        <div class="feature-item mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Multiple Format Support</strong>
+                        </div>
+                    </div>
+                    <div class="creator-info mt-4 p-3 rounded" style="background: var(--glass-bg);">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-code fa-2x text-primary me-3"></i>
+                            <div>
+                                <h6 class="mb-1">Created by @codetech</h6>
+                                <small class="text-muted">Passionate Developer & Tech Enthusiast</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Modal -->
+    <div class="modal fade" id="supportModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-heart text-danger me-2"></i>
+                        Support Development
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-coffee fa-3x text-warning mb-3"></i>
+                        <h5>Buy me a coffee!</h5>
+                        <p class="text-muted">If you find this tool useful, consider supporting the developer</p>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <a href="https://github.com/sponsors/codetech" target="_blank" class="btn btn-gradient">
+                            <i class="fab fa-github me-2"></i>GitHub Sponsors
+                        </a>
+                        <a href="https://ko-fi.com/codetech" target="_blank" class="btn btn-outline-warning">
+                            <i class="fas fa-coffee me-2"></i>Ko-fi
+                        </a>
+                        <a href="https://paypal.me/codetech" target="_blank" class="btn btn-outline-primary">
+                            <i class="fab fa-paypal me-2"></i>PayPal
+                        </a>
+                    </div>
+                    <div class="mt-4 p-3 rounded" style="background: var(--glass-bg);">
+                        <small class="text-muted">
+                            <i class="fas fa-star text-warning me-1"></i>
+                            Your support helps maintain and improve this project!
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal fade" id="resultModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        Processing Complete!
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="success-animation mb-4">
+                        <i class="fas fa-download fa-3x text-primary pulse"></i>
+                    </div>
+                    <h6 class="mb-3">Your file is ready!</h6>
+                    <p class="text-muted mb-4" id="result-filename">filename.mp4</p>
+                    <div class="d-grid gap-2">
+                        <a href="#" class="btn btn-gradient btn-lg" id="download-btn">
+                            <i class="fas fa-download me-2"></i>
+                            Download File
+                        </a>
+                        <button type="button" class="btn btn-outline-secondary" onclick="location.reload()">
+                            <i class="fas fa-refresh me-2"></i>
+                            Process Another File
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="custom-footer text-center py-4 mt-5">
+        <div class="container">
+            <div class="footer-content">
+                <i class="fas fa-magic me-2 text-primary"></i>
+                <span class="text-muted">Powered by FFmpeg & Advanced Processing</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

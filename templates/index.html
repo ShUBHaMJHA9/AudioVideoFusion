@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <!-- Hero Section -->
+            <div class="text-center mb-5 fade-in">
+                <h1 class="display-4 fw-bold mb-3">
+                    <span class="brand-primary">Transform</span> Your 
+                    <span class="brand-accent">Media</span>
+                </h1>
+                <p class="lead text-muted mb-4">
+                    Professional multimedia processing with advanced FFmpeg technology
+                </p>
+                <div class="hero-stats d-flex justify-content-center gap-4 flex-wrap">
+                    <div class="stat-item">
+                        <i class="fas fa-bolt text-warning"></i>
+                        <span class="ms-2">Lightning Fast</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-shield-alt text-success"></i>
+                        <span class="ms-2">Secure Processing</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-magic text-info"></i>
+                        <span class="ms-2">AI Enhanced</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4 fade-in">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-play-circle me-2 text-primary"></i>
+                        Choose Your Operation
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-4">
+                        Select a multimedia operation to get started with your files
+                    </p>
+                
+                <!-- Operation Selection -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Select Operation:</label>
+                    <div class="row g-3">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card operation-card" data-operation="merge_audio_video">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-film fa-2x text-primary mb-2"></i>
+                                    <h6>Merge Audio + Video</h6>
+                                    <small class="text-muted">Combine audio with video</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card operation-card" data-operation="merge_audio_tracks">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-music fa-2x text-success mb-2"></i>
+                                    <h6>Merge Audio Tracks</h6>
+                                    <small class="text-muted">Combine multiple audio files</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card operation-card" data-operation="audio_to_image">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-image fa-2x text-warning mb-2"></i>
+                                    <h6>Audio + Image</h6>
+                                    <small class="text-muted">Create video from audio and image</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card operation-card" data-operation="convert_format">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-exchange-alt fa-2x text-info mb-2"></i>
+                                    <h6>Convert Format</h6>
+                                    <small class="text-muted">Change file format</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card operation-card" data-operation="loop_audio">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-repeat fa-2x text-danger mb-2"></i>
+                                    <h6>Loop Audio</h6>
+                                    <small class="text-muted">Repeat audio for duration</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card operation-card" data-operation="merge_videos">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-video fa-2x text-purple mb-2"></i>
+                                    <h6>Merge Videos</h6>
+                                    <small class="text-muted">Combine multiple videos</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card operation-card" data-operation="extract_audio">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-volume-up fa-2x text-orange mb-2"></i>
+                                    <h6>Extract Audio</h6>
+                                    <small class="text-muted">Extract audio from video</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Upload Section -->
+                <div class="mb-4" id="upload-section" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Upload Files</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="upload-forms"></div>
+                            <div class="mt-3">
+                                <button type="button" class="btn btn-primary" id="upload-btn" disabled>
+                                    <i class="fas fa-cloud-upload-alt me-2"></i>
+                                    Upload Files
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Options Section -->
+                <div class="mb-4" id="options-section" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Processing Options</h5>
+                        </div>
+                        <div class="card-body" id="options-content">
+                            <!-- Dynamic options will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processing Section -->
+                <div class="mb-4" id="processing-section" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Processing Status</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <div class="progress" style="height: 20px;">
+                                    <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                                         role="progressbar" style="width: 0%">0%</div>
+                                </div>
+                            </div>
+                            <div id="status-message" class="text-muted">Ready to process...</div>
+                            <div class="mt-3">
+                                <button type="button" class="btn btn-success" id="process-btn" disabled>
+                                    <i class="fas fa-cogs me-2"></i>
+                                    Start Processing
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="mb-4" id="results-section" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Results</h5>
+                        </div>
+                        <div class="card-body" id="results-content">
+                            <!-- Results will be shown here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- File Upload Templates -->
+<template id="audio-upload-template">
+    <div class="mb-3">
+        <label class="form-label">Audio File:</label>
+        <input type="file" class="form-control file-input" name="audio" 
+               accept=".mp3,.wav,.flac,.aac,.m4a,.ogg" required>
+        <div class="form-text">Supported formats: MP3, WAV, FLAC, AAC, M4A, OGG</div>
+    </div>
+</template>
+
+<template id="video-upload-template">
+    <div class="mb-3">
+        <label class="form-label">Video File:</label>
+        <input type="file" class="form-control file-input" name="video" 
+               accept=".mp4,.avi,.mov,.mkv,.webm,.flv" required>
+        <div class="form-text">Supported formats: MP4, AVI, MOV, MKV, WebM, FLV</div>
+    </div>
+</template>
+
+<template id="image-upload-template">
+    <div class="mb-3">
+        <label class="form-label">Image File:</label>
+        <input type="file" class="form-control file-input" name="image" 
+               accept=".jpg,.jpeg,.png,.bmp,.tiff,.webp" required>
+        <div class="form-text">Supported formats: JPG, PNG, BMP, TIFF, WebP</div>
+    </div>
+</template>
+
+<template id="multiple-audio-template">
+    <div class="mb-3">
+        <label class="form-label">Audio Files (multiple):</label>
+        <input type="file" class="form-control file-input" name="audio" 
+               accept=".mp3,.wav,.flac,.aac,.m4a,.ogg" multiple required>
+        <div class="form-text">Select 2 or more audio files to merge</div>
+    </div>
+</template>
+
+<template id="single-file-template">
+    <div class="mb-3">
+        <label class="form-label">File to Convert:</label>
+        <input type="file" class="form-control file-input" name="file" 
+               accept=".mp3,.wav,.mp4,.avi,.mov,.jpg,.png" required>
+        <div class="form-text">Select any supported audio, video, or image file</div>
+    </div>
+</template>
+{% endblock %}
